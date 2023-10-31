@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class NamesList {
-
+    File file = new File("names.txt");
     private ArrayList<String> names;
 
     public NamesList() {
@@ -17,7 +17,7 @@ public class NamesList {
 
         Scanner sc = new Scanner(System.in);
         int choice = 99;
-        while( choice != 0) {
+        while (choice != 0) {
             showMenu();
             choice = sc.nextInt();
             switch (choice) {
@@ -35,7 +35,7 @@ public class NamesList {
     private void showMenu() {
         System.out.println("""
                 1) Display list of names
-                2) Load list of names (not implemented)
+                2) Load list of names
                 3) Save list of names (not implemented)
                 4) Enter names
                 0) Exit
@@ -50,9 +50,9 @@ public class NamesList {
                 """);
         Scanner sc = new Scanner(System.in);
         String name = "-nothing yet-";
-        while(!name.isBlank() && sc.hasNextLine()) {
+        while (!name.isBlank() && sc.hasNextLine()) {
             name = sc.nextLine();
-            if(!name.isBlank()) {
+            if (!name.isBlank()) {
                 names.add(name);
                 System.out.println(name + " added to the list, enter another, or empty to quit");
             }
@@ -67,20 +67,30 @@ public class NamesList {
 
     private void loadListOfNames() {
         // TODO: Implement load of the names list from a file
-        System.out.println("NOT IMPLEMENTED");
+        Scanner sc;
+        try {
+            sc = new Scanner(file);
+        }catch (FileNotFoundException e){
+            throw new RuntimeException(e);
+        }
+        while (sc.hasNextLine()){
+            names.add(sc.nextLine());
+        }
+        sc.close();
+
     }
 
     private void displayListOfNames() {
-        for(String name : names) {
+        for (String name : names) {
             System.out.println(name);
         }
         String isAre = "are";
         String s = "s";
-        if(names.size() == 1) {
+        if (names.size() == 1) {
             isAre = "is";
             s = "";
         }
-        System.out.println("There " + isAre + " " + names.size() + " name"+s+" in the system");
+        System.out.println("There " + isAre + " " + names.size() + " name" + s + " in the system");
     }
 
     private void exit() {
@@ -96,4 +106,22 @@ public class NamesList {
         NamesList app = new NamesList();
         app.startUserInterface();
     }
+
+    public static void indlæs() {
+        File f = new File("names.txt");
+
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(f);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        while (scanner.hasNextLine()) {
+            System.out.println(scanner.nextLine());
+
+            scanner.close();
+        }
+    }
+
 }
